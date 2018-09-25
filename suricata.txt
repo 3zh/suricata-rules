@@ -14,8 +14,8 @@ alert http $HOME_NET any -> $EXTERNAL_NET any  (msg: "Powershell Empire HTTP Req
 
 alert http $EXTERNAL_NET any -> $HOME_NET any (msg: "Powershell Empire HTTP Response "; flow: established,to_client; content:"200"; http_stat_code; flowbits: isset,empire; content:"Cache-Control: no-cache, no-store, must-revalidate"; http_header; content: "Server: Microsoft-IIS/7.5"; http_header; distance: 0; sid: 18090302; rev: 1;)
 
-alert http $EXTERNAL_NET any -> $HOME_NET any (msg£º"Weevely PHP Backdoor Response "; flow: established, to_client; content:"200"; http_status_code; content:!"<title>"; http_server_body; pcre:"/<(\w+)>[a-zA-Z0-9+\/]{20,}(?:[a-zA-Z0-9+\/]{1}[a-zA-Z0-9+\/=]{1}|==)<\/\w+>/Q"; sid:18090303; rev:1;)
+alert http $EXTERNAL_NET any -> $HOME_NET any (msgï¼š"Weevely PHP Backdoor Response "; flow: established, to_client; content:"200"; http_status_code; content:!"<title>"; http_server_body; pcre:"/<(\w+)>[a-zA-Z0-9+\/]{20,}(?:[a-zA-Z0-9+\/]{1}[a-zA-Z0-9+\/=]{1}|==)<\/\w+>/Q"; sid:18090303; rev:1;)
 
-alert http $EXTERNAL_NET any -> $HOME_NET any (msg: "¿ÉÒÉµÄcaidaoÏìÓ¦-ÁĞÄ¿Â¼"; flow: established,to_client; content:"200"; http_stat_code; content:!"<html>"; http_server_body; content:"|2d 3e|"; http_server_body; depth:2; pcre:"/[\w\d]+\.\w{2,3}\s+\d{4}-\d{2}-\d{2}\s[\d:]{8}/RQ";  sid: 18091301; rev: 1; )
+alert http $EXTERNAL_NET any -> $HOME_NET any (msg: "å¯ç–‘çš„caidaoå“åº”-åˆ—ç›®å½•"; flow: established,to_client; content:"200"; http_stat_code; content:!"<html>"; http_server_body; content:"|2d 3e|"; http_server_body; depth:2; pcre:"/[\w\d]+\.\w{2,3}\s+\d{4}-\d{2}-\d{2}\s[\d:]{8}/RQ";  sid: 18091301; rev: 1; )
 
 alert http $HOME_NET any -> $EXTERNAL_NET any (msg: "CobaltStrike download.windowsupdate.com C2 Profile"; flow: established; content:"msdownload"; http_uri; pcre:"/\/c\/msdownload\/update\/others\/[\d]{4}/\d{2}/\d{7,8}_[
