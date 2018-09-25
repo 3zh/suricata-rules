@@ -1,0 +1,21 @@
+alert http any any -> any any (msg:"webshell_caidao_php"; flow:established; content:"POST";http_method; content:".php"; http_uri; content:"base64_decode"; http_client_body;  sid:3000001; rev:1;)
+
+alert http any any -> any any (msg:"msfconsole powershell response"; flow:established; content:!"<html>"; content:!"<script>"; content:"|70 6f 77 65 72 73 68 65 6c 6c 2e 65 78 65|"; http_server_body; content:"|46 72 6f 6d 42 61 73 65 36 34 53 74 72 69 6e 67|"; http_server_body; sid:3000002; rev:1;)
+
+alert tcp any any -> any any (msg: "Hacker backdoor or shell  Microsoft Corporation"; flow:to_server,established; content:"|20 4d 69 63 72 6f 73 6f 66 74 20 43 6f 72 70 6f 72 61 74 69 6f 6e|"; depth:200; sid:3030303; rev:1;)
+
+alert tcp any any -> any any (msg: "Hacker backdoor or shell Microsoft Windows"; flow:established; content:"|4D 69 63 72 6F 73 6F 66 74 20 57 69 6E 64 6F 77 73 20 5B|"; depth:200; sid:3030304; rev:1;)
+
+alert http any any -> any any (msg:"***Windows Powershell Request UserAgent***"; flow:established; content:"PowerShell"; http_user_agent; pcre:"/PowerShell|WindowsPowerShell/i"; sid:3000003; rev:1;)
+
+alert http any any -> any any (msg:"***Linux wget/curl download .sh script***"; flow:established,to_server; content:".sh"; http_uri;  pcre:"/curl|Wget|linux-gnu/Vi";  sid:3000004; rev:1;)
+
+alert http $HOME_NET any -> $EXTERNAL_NET any  (msg: "Powershell Empire HTTP Request "; flow: established, to_server; content:".php"; http_uri;  pcre:"/session=[a-zA-Z0-9+/]{20,300}([a-zA-Z0-9+/]{1}[a-zA-Z0-9+/=]{1}|==)/ACi"; flowbits:set,empire; sid: 18090301; rev: 1;)
+
+alert http $EXTERNAL_NET any -> $HOME_NET any (msg: "Powershell Empire HTTP Response "; flow: established,to_client; content:"200"; http_stat_code; flowbits: isset,empire; content:"Cache-Control: no-cache, no-store, must-revalidate"; http_header; content: "Server: Microsoft-IIS/7.5"; http_header; distance: 0; sid: 18090302; rev: 1;)
+
+alert http $EXTERNAL_NET any -> $HOME_NET any (msg："Weevely PHP Backdoor Response "; flow: established, to_client; content:"200"; http_status_code; content:!"<title>"; http_server_body; pcre:"/<(\w+)>[a-zA-Z0-9+\/]{20,}(?:[a-zA-Z0-9+\/]{1}[a-zA-Z0-9+\/=]{1}|==)<\/\w+>/Q"; sid:18090303; rev:1;)
+
+alert http $EXTERNAL_NET any -> $HOME_NET any (msg: "可疑的caidao响应-列目录"; flow: established,to_client; content:"200"; http_stat_code; content:!"<html>"; http_server_body; content:"|2d 3e|"; http_server_body; depth:2; pcre:"/[\w\d]+\.\w{2,3}\s+\d{4}-\d{2}-\d{2}\s[\d:]{8}/RQ";  sid: 18091301; rev: 1; )
+
+alert http $HOME_NET any -> $EXTERNAL_NET any (msg: "CobaltStrike download.windowsupdate.com C2 Profile"; flow: established; content:"msdownload"; http_uri; pcre:"/\/c\/msdownload\/update\/others\/[\d]{4}/\d{2}/\d{7,8}_[
