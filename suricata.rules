@@ -24,3 +24,4 @@ alert tcp $HOME_NET any -> any any (msg: "http GET data"; flow: established;  co
 
 alert tcp $EXTERNAL_NET any -> $HOME_NET any (msg: "CobaltStrike login server"; flow:established; content:"Cyberspace"; depth:200; content:"Somewhere"; distance:0; content:"cobaltstrike"; distance:0; content:"AdvancedPenTesting";distance:0; sid:3030305; rev:1;)
 
+alert udp $HOME_NET any -> $EXTERNAL_NET 53 (msg:"可疑的dns隧道请求"; flow:established,to_server; content:"|01 00|"; depth:4; pcre:"/\x00\x10\x00\x01|\x00\x0f\x00\x01|\x00\x05\x00\x01/"; dsize:>150; classtype:trojan-activity; sid:181109; rev:1; )
