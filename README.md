@@ -1,5 +1,5 @@
 # suricata-rules
-这是自己平时抓包写的suricata规则，会慢慢更新
+平时抓包写的suricata规则，会慢慢更新
 
 ### webshell_caidao_php
     匹配菜刀最常见的特征base64_decode
