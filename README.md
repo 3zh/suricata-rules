@@ -25,6 +25,9 @@
     ->|1.jsp.2018-10-14 12:21:12.2129.R W
     |<-
 
+### 可疑的netstat命令流量
+    HTTP中匹配cmd执行netstat响应结果，常见于命令执行。
+
 ### CobaltStrike download.windowsupdate.com C2 Profile
     正常windows更新域名，uri是十六进制形式，日期变动，格式固定。cobaltstrike c2通过更改host伪造windows更新产生的流量，将传输的
     数据base64后放到url中，例如：
