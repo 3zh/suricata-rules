@@ -28,6 +28,9 @@
 ### 可疑的netstat命令流量
     HTTP中匹配cmd执行netstat响应结果，常见于命令执行。
 
+### PHP Weevely Webshell
+    用正则表达式匹配这种<202cb962>SqwZTE3ue3seeTZjbJE1Hw==</202cb962>格式，排除html标签避免误报。
+    
 ### CobaltStrike download.windowsupdate.com C2 Profile
     正常windows更新域名，uri是十六进制形式，日期变动，格式固定。cobaltstrike c2通过更改host伪造windows更新产生的流量，将传输的
     数据base64后放到url中，例如：
