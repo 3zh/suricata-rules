@@ -1,56 +1,33 @@
 # suricata-rules
-平时抓包写的suricata规则，会慢慢更新
+	此项目记录安全运营人员提取的Suricata IDS规则，重点是一些恶意行为/渗透工具/渗透流量/远控木马等,欢迎大家提交。 
 
-### webshell_caidao_php
-    匹配菜刀最常见的特征base64_decode
-    POST /upload/1.php HTTP/1.1\r\nUser-Agent: Java/1.8.0_151\r\nHost: xxxxxxx\r\nAccept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2\r
-    \nConnection: keep-alive\r\nContent-type: application/x-www-form-urlencoded\r\nContent-Length: 725\r\n\r\naa=@eval.   (base64_decode($_POST[action]));&action=QGluaV9zZXQoImR   pc3BsYXlfZXJyb3JzIiwiMCIpO0BzZXRfdGltZV9saW1pdCgwKTtAc2V0X21hZ2ljX3F1b3Rlc19ydW50aW1lKDApO2VjaG8oIi0%2BfCIpOzskRD1iYXNlNjRfZGVjb2RlKCRfUE9TVFsiejEiXSk7JEY9QG9wZW5kaXIoJEQ     pO2lmKCRGPT1OVUxMKXtlY2hvKCJFUlJPUjovLyBQYXRoIE5vdCBGb3VuZCBPciBObyBQZXJtaXNzaW9uISIpO31lbHNleyRNPU5VTEw7JEw9TlVMTDt3aGlsZSgkTj1AcmVhZGRpcigkRikpeyRQPSRELiIvIi4kTjskVD1AZGF0ZSgiWS1tLWQgSDppOnMiLEBmaWxlbXRpbWUoJFApKTtAJEU9c3Vic3RyKGJhc2VfY29udmVydChAZmlsZXBlcm1zKCRQKSwxMCw4KSwtNCk7JFI9Ilx0Ii4kVC4iXHQiLkBmaWxlc2l6ZSgkUCkuIlx0Ii4kRS4iCiI7aWYoQGlzX2RpcigkUCkpJE0uPSROLiIvIi4kUjtlbHNlICRMLj0kTi4kUjt9ZWNobyAkTS4kTDtAY2xvc2VkaXIoJEYpO307ZWNobygifDwtIik7ZGllKCk7&z1=RDpcd2FtcDY0XHd3d1x1cGxvYWQ%3D
-    
-### Hacker backdoor or shell  Microsoft Corporation
-    TCP流量中匹配windows cmd启动后回显信息“Microsoft Corporation”，常见场景nc反弹，添加depth修饰符只在前200字节匹配避免误报。
-    Microsoft Windows [版本 6.1.7601]
-    版权所有 (c) 2009 Microsoft Corporation。保留所有权利。
-    
-### Hacker backdoor or shell Microsoft Windows
-    同上 匹配“Microsoft Windows [”关键字 
-    
-### Windows Powershell Request UserAgent
-    匹配powershell web cmdlet user-agent特征
+#### 规则编写要求如下
+每个规则对应新建目录如下
 
-### Linux wget/curl download .sh script
-    一些恶意软件使用curl或者wget下载sh脚本执行，常见于挖矿木马。
+	webshell检测	#规则目录名称-按照对应检测规则描述清楚即可
+	- webshell.pcap	#规则对应的pcap包，尽量以flow的形式保存
+	- websehll.rules	#自己提取的规则文件，尽量测试过提交。
+	- README	#可以描述一些规则相关的东西，便于他人理解，支持Markdown
 
-### 可疑的caidao响应-列目录
-    通过正则表达式匹配http响应里列目录操作,排除掉html标签避免误报
-    ->|1.jsp.2018-10-14 12:21:12.2129.R W
-    |<-
+#### 规则目录
+	简单描述要书写的检测规则，如果有对应规则目录，建议存放至已有规则目录中。
 
-### 可疑的netstat命令流量
-    HTTP中匹配cmd执行netstat响应结果，常见于命令执行。
+#### 规则对应pcap包
+	规则对应的pcap通过Wireshark筛选后，利用菜单文件--保存特定分组--选择pcap格式上传。
+	便于识别恶意流数据，也是最小的，便于移动和备份
 
-### PHP Weevely Webshell
-    用正则表达式匹配这种<202cb962>SqwZTE3ue3seeTZjbJE1Hw==</202cb962>格式，排除html标签避免误报。
-    
-### CobaltStrike download.windowsupdate.com C2 Profile
-    正常windows更新域名，uri是十六进制形式，日期变动，格式固定。cobaltstrike c2通过更改host伪造windows更新产生的流量，将传输的
-    数据base64后放到url中，例如：
-    GET /c/msdownload/update/others/2016/12/29136388_oY_bIWScNUZ3X5ebOUqkFA.cab HTTP/1.1
-    Accept: */*
-    Host: download.windowsupdate.com
-    User-Agent: Windows-Update-Agent/10.0.10011.16384 Client-Protocol/1.40
-    windows更新正常格式“/c/msdownload/update/others/2012/02/8位数字_40位十六进制.cab”
+#### 规则.rules
+规则文件命名随意，但后缀必须为rules，如：webshell_caidao.rules
+文件中可以出现多个规则文件，README备注中写明
+规则内容建议如下：
+##### 示例
+	sid随意，rev为规则版本每次修改递增，metadata添加创建日期与创建人
+	alert http any any -> any any (msg:"webshell_caidao_php"; flow:established; content:"POST";
+    http_method; content:".php"; http_uri; content:"base64_decode"; http_client_body;  sid:3000001; 
+    rev:1; metadata:created_at 2018_11_14, by al0ne;)
 
-### CobaltStrike login server
-    cobaltstrike客户端与团队服务端通讯走ssl，默认证书配置在teamserver文件中
-    keytool -keystore ./cobaltstrike.store -storepass 123456 -keypass 123456 -genkey -keyalg RSA -alias cobaltstrike -dname "CN=google.com OU=xsser, O=xsser, L=Somewhere, S=Cyberspace, C=Earth"
+# 注
+本项目根目录文件说明
 
-### 可疑的dns隧道请求
-    开始的01 00 匹配dns.flags字段（0100表示dns请求8180代表dns响应），后面用正则匹配的十六进制代表dns请求类型
-    \x00\x10\x00\x01是TXT记录，\x00\x0f\x00\x01是MX记录，\x00\x05\x00\x01是CNAME记录，dsize代表udp数据包长度，
-    dns隧道将数据封装到二级域名方式传输长度要大于普通域名，但也容易触发误报。
-
-### http GET data
-    HTTP协议中GET请求也可以像POST那样在请求体中传输数据，大多数IDS以及协议还原设备对于GET请求这块是只记录URL，
-    如果传输数据在流量还原中只会当成在正常的访问请求，SSR中http混淆就是使用这种方法。
-    47 45 54 匹配HTTP GET关键字，0d0a0d0a是HTTP协议分隔符，wireshark追踪流后发现0d0a0d0a就是请求体结尾，后面跟着响应数据，
-    此条规则匹配0d0a0d0a后面还有数据的情况，并且排除掉了一些正常业务（排除掉{和<字符串）。
+	suricata.rules	#所有有效规则的集合
+	disable.conf	#分析过程中记录Suricata禁用规则(无效、误报等情况)
