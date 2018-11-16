@@ -11,3 +11,5 @@
     User-Agent: Windows-Update-Agent/10.0.10011.16384 Client-Protocol/1.40
     windows更新正常格式“/c/msdownload/update/others/2012/02/8位数字_40位十六进制.cab”
 
+### CobaltStrike HTTP beacon response
+    提取cobaltstrike http上线心跳包响应特征
