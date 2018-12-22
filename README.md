@@ -51,5 +51,6 @@
 # 注
 本项目根目录文件说明
 
-	suricata-ids.rules	#所有有效规则的集合
+	suricata-ids.rules	#所有规则的集合，更新时直接下载规则文件替换。
 	disable.conf	#分析过程中记录Suricata禁用规则(无效、误报等情况)
+	sid.txt 	#记录了所有规则的sid 避免重复，每次添加规则后必须更新sid.txt文件。
