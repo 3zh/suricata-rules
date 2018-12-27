@@ -1,6 +1,7 @@
 English | [简体中文](./README.zh-CN.md)
 # suricata-rules
-	Suricata is an excellent open source intrusion detection system that records the high quality Suricata IDS rules extracted by security operations staff. Welcome to submit 
+	Suricata is an excellent open source intrusion detection system that records the high quality Suricata IDS rules 
+	extracted by security operations staff. Welcome to submit 
 
 ### Rules are written as follows
 Each rule corresponds to the new directory as follows
@@ -11,10 +12,12 @@ Each rule corresponds to the new directory as follows
 	- README	#Can describe some rules related things, easy for others to understand, support Markdown
 
 #### Rule directory
-	The directory is named after a single CVE, hacking tool, threat type. If there is a corresponding rule directory, it is recommended to store it in the existing rule directory.
+	The directory is named after a single CVE, hacking tool, threat type. If there is a corresponding rule directory, 
+	it is recommended to store it in the existing rule directory.
 
 #### The rule corresponds to the pcap package
-	After the pcap corresponding to the rule is filtered by Wireshark, use the menu file -- save a specific group -- to select the pcap format to upload.
+	After the pcap corresponding to the rule is filtered by Wireshark, use the menu file 
+	-- save a specific group -- to select the pcap format to upload.
 Easy to identify malicious streaming data, also minimal, easy to move and backup
 
 #### rule.rules
@@ -44,7 +47,8 @@ The rules are recommended as follows：
 	Sensitive information leakage    3015000～3015999
 	Hacking tool    3016000～3016999
 	Rev is incremented for each version of the rule version, metadata added creation date and creator
-	Reference is a reference source/reference material, such as a CVE number, or a fix, an attack description, and so on.
+	Reference is a reference source/reference material, such as a CVE number, or a fix, an attack description,
+	and so on.
 	alert http any any -> any any (msg:"webshell_caidao_php"; flow:established; content:"POST";
     http_method; content:".php"; http_uri; content:"base64_decode"; http_client_body;  sid:3004001; 
     rev:1; metadata:created_at 2018_11_14, by al0ne;)
@@ -54,4 +58,5 @@ Description of the root directory file of this project
 
 	suricata-ids.rules	#A collection of all rules, directly downloading rule file replacements when updating.
 	disable.conf	#Suricata disable rules are recorded during analysis (invalid, false positives, etc.)
-	sid.txt 	#The sid of all rules is recorded to avoid duplication, and the sid.txt file must be updated each time the rule is added.
+	sid.txt 	#The sid of all rules is recorded to avoid duplication, and the sid.txt file must be updated 
+	each time the rule is added.
