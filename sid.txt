@@ -16,3 +16,6 @@ Powershell Empire HTTP Request  3016007
 Powershell Empire HTTP Response 3016008
 webshell_caidao_php     3016009
 China hacker tools caidao response - column directory   3016010
+CobatlStrikt team servers 200 OK Space 3016011
+Cryptocurrency Miner Check By Submit	3013015
+Pools Response Cryptocurrency Miner		3013016
